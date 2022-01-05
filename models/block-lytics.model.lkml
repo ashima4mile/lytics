@@ -25,24 +25,27 @@ persist_with: lytics_default_datagroup
 # Typically, join parameters require that you define the join type, join relationship, and a sql_on clause.
 # Each joined view also needs to define a primary key.
 
-explore: user_alias_all {
+explore: users {
 
-  join: user_segments_all {
+  join: user_segments {
     relationship: one_to_many
     type: left_outer
-    sql_on: ${user_alias_all.id}=${user_segments_all.id} ;;
+    sql_on: ${users.id}=${user_segments.id} ;;
+    fields: []
   }
 
-  join: user_channels_all {
-    relationship: one_to_many
+  join: audience_definition {
+    relationship: many_to_one
     type: left_outer
-    sql_on: ${user_alias_all.id}=${user_channels_all.id} ;;
+    sql_on:${user_segments.segment_slug} = ${audience_definition.slug} ;;
   }
 
-  join: user_affinities_tag_all {
-    relationship: one_to_many
+  join: shopify_products {
+    view_label: "Shopify Orders"
     type: left_outer
-    sql_on: ${user_alias_all.id}=${user_affinities_tag_all.id} ;;
+    relationship: one_to_many
+    sql_on: ${users.email} = ${shopify_products.email} ;;
   }
+
 
 }
