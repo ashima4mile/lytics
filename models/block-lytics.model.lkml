@@ -9,6 +9,7 @@ datagroup:lytics_default_datagroup {
 
 persist_with: lytics_default_datagroup
 
+explore: top_nth_products_by_audience {}
 explore: users {
 
   join: user_segments {
